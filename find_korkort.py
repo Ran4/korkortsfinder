@@ -21,7 +21,6 @@ def there_any_free_times(driver, url) -> bool:
     valj_prov_select.send_keys("körpr")  # körprov
 
     # "Var vill du göra provet?" -> sollentuna
-
     time.sleep(0.5)
     var_gora_provet = driver.find_element_by_id("id-control-searchText-1-1")
     var_gora_provet.click()
@@ -29,22 +28,35 @@ def there_any_free_times(driver, url) -> bool:
         var_gora_provet.send_keys(Keys.BACKSPACE)
         var_gora_provet.send_keys(Keys.DELETE)
 
-    var_gora_provet.send_keys("Solletuna")
+    time.sleep(0.2)
+    var_gora_provet.send_keys("Sollentuna")
     # var_gora_provet.send_keys("Uppsala")
 
     var_gora_provet.send_keys(Keys.ENTER)
+    time.sleep(0.2)
 
-    # "Vill du hyra bil av trafikverket?" -> nej
+    # "Vill du hyra bil av trafikverket?" -> "ja, manuell"
     hyra_bil_select = driver.find_element_by_id("vehicle-select")
-    hyra_bil_select.send_keys("nej")
+    hyra_bil_select.send_keys("ja, ma")  # "ja, manuell"
 
     # Once we've selected it, there's a spinner.
     # We don't know when it's done, so let's just wait eight seconds and hope
     # that it's done...
     time.sleep(8)
 
-    return any(el.text == "Lediga provtider"
-               for el in driver.find_elements_by_xpath("//label"))
+    date_strings = sorted([
+        el.text
+        for el in driver.find_elements_by_xpath("//strong")
+    ])
+
+    any_free_times: bool = any(date_string.startswith("2021-")
+                               for date_string in date_strings)
+    if date_strings:
+        print(f"  Earliest time found: {date_strings[0]}")
+    else:
+        print("  no free times")
+
+    return any_free_times
 
 
 def send_email(config: Config, url: str) -> None:
