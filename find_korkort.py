@@ -28,8 +28,10 @@ def there_any_free_times(driver, url) -> bool:
     for _ in range(20):
         var_gora_provet.send_keys(Keys.BACKSPACE)
         var_gora_provet.send_keys(Keys.DELETE)
+
     var_gora_provet.send_keys("Solletuna")
     # var_gora_provet.send_keys("Uppsala")
+
     var_gora_provet.send_keys(Keys.ENTER)
 
     # "Vill du hyra bil av trafikverket?" -> nej
@@ -84,7 +86,7 @@ if __name__ == "__main__":
         if there_any_free_times(driver, url):
             print("Det FINNS lediga tider!!111 boka!")
 
-            # send_email(config, url)
+            send_email(config, url)
 
         else:
             print("Inga lediga tider!")
