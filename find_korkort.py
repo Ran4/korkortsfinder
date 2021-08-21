@@ -1,4 +1,5 @@
 import smtplib
+from datetime import datetime
 import ssl
 import time
 
@@ -49,8 +50,10 @@ def there_any_free_times(driver, url) -> bool:
         for el in driver.find_elements_by_xpath("//strong")
     ])
 
-    any_free_times: bool = any(date_string.startswith("2021-")
-                               for date_string in date_strings)
+    any_free_times: bool = any(
+        date_string.startswith("2021-08") or date_string.startswith("2021-09")
+        for date_string in date_strings
+    )
     if date_strings:
         print(f"  Earliest time found: {date_strings[0]}")
     else:
@@ -95,6 +98,7 @@ if __name__ == "__main__":
     url = "https://fp.trafikverket.se/Boka/#/search/xYIIyyxLgcLAlA/5/0/0/0"
 
     while True:
+        print(datetime.now().astimezone().strftime("%y%m%d %H:%M"))
         if there_any_free_times(driver, url):
             print("Det FINNS lediga tider!!111 boka!")
 
