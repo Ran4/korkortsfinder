@@ -98,13 +98,16 @@ if __name__ == "__main__":
     url = "https://fp.trafikverket.se/Boka/#/search/xYIIyyxLgcLAlA/5/0/0/0"
 
     while True:
-        print(datetime.now().astimezone().strftime("%y%m%d %H:%M"))
-        if there_any_free_times(driver, url):
-            print("Det FINNS lediga tider!!111 boka!")
+        try:
+            print(datetime.now().astimezone().strftime("%y%m%d %H:%M"))
+            if there_any_free_times(driver, url):
+                print("Det FINNS lediga tider!!111 boka!")
 
-            send_email(config, url)
+                send_email(config, url)
 
-        else:
-            print("Inga lediga tider!")
+            else:
+                print("Inga lediga tider!")
 
-        time.sleep(20)
+            time.sleep(20)
+        except Exception as e:
+            print("Got an exception:", e)
